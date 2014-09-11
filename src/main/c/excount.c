@@ -1,23 +1,39 @@
 #include <jni.h>
 #include <jvmti.h>
+#include <stdint.h>
+#include <stdatomic.h>
+// #include "com_github_marschall_excount_ExceptionCounter.h"
 
 // http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
 // http://docs.oracle.com/javase/7/docs/platform/jvmti/jvmti.html
 // https://blogs.oracle.com/kto/entry/using_vm_agents
 // https://plumbr.eu/blog/migrating-from-javaagent-to-jvmti-our-experience
-// interlocked functions on windows
 // https://developer.apple.com/library/mac/documentation/cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html
+// http://en.cppreference.com/w/c/atomic
 
-static volatile int count = 0;
+// static volatile int count = 0;
+_Atomic int32_t count = ATOMIC_VAR_INIT(0);
+// static atomic_int_fast32_t count;
 
-void JNICALL ExceptionCallback(jvmtiEnv* jvmti, JNIEnv* env, jthread thread,
-                               jmethodID method, jlocation location, jobject exception,
-                               jmethodID catch_method, jlocation catch_location) {
-    __sync_fetch_and_add(&count , 1);
+JNIEXPORT jint JNICALL Java_com_github_marschall_excount_ExceptionCounter_getCount
+  (JNIEnv *env, jobject thisObj) {
+    return atomic_load(&count);
+}
+
+JNIEXPORT jint JNICALL Java_com_github_marschall_excount_ExceptionCounter_clearAndGetCount
+  (JNIEnv *env, jobject thisObj) {
+    return atomic_exchange(&count, 0);
 }
 
 
-JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM* vm, char* options, void* reserved) {
+void JNICALL ExceptionCallback(jvmtiEnv *jvmti, JNIEnv *env, jthread thread,
+                               jmethodID method, jlocation location, jobject exception,
+                               jmethodID catch_method, jlocation catch_location) {
+    atomic_fetch_add(&count , 1);
+}
+
+
+JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     jvmtiEnv* jvmti;
     jvmtiEventCallbacks callbacks;
     jvmtiCapabilities capabilities;
