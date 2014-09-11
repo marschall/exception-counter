@@ -1,7 +1,5 @@
 #include <jni.h>
 #include <jvmti.h>
-#include <string.h>
-#include <stdio.h>
 
 // http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
 // http://docs.oracle.com/javase/7/docs/platform/jvmti/jvmti.html
@@ -15,7 +13,7 @@ static volatile int count = 0;
 void JNICALL ExceptionCallback(jvmtiEnv* jvmti, JNIEnv* env, jthread thread,
                                jmethodID method, jlocation location, jobject exception,
                                jmethodID catch_method, jlocation catch_location) {
-    __sync_fetch_and_add(&count , i);
+    __sync_fetch_and_add(&count , 1);
 }
 
 
