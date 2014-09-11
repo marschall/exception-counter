@@ -57,6 +57,17 @@
       <groupId>com.github.maven-nar</groupId>
       <artifactId>nar-maven-plugin</artifactId>
       <extensions>true</extensions>
+      <configuration>
+        <libraries>
+          <library>
+            <type>jni</type>
+            <!-- 
+            <narSystemPackage>com.riskfocusinc.demo</narSystemPackage>
+            <linkCPP>false</linkCPP>
+             -->
+          </library>
+        </libraries>
+      </configuration>
     </plugin>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
