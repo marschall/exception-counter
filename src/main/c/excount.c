@@ -2,6 +2,7 @@
 #include <jvmti.h>
 #include <stdint.h>
 #include <stdatomic.h>
+#include<stdio.h>
 // #include "com_github_marschall_excount_ExceptionCounter.h"
 
 // http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
@@ -41,21 +42,25 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     jvmtiCapabilities capabilities;
 
     if ((*vm)->GetEnv(vm, (void**)&jvmti, JVMTI_VERSION_1_0) != JNI_OK) {
+        fprintf(stderr, "GetEnv failed");
         return -1;
     } 
 
     memset(&capabilities, 0, sizeof(capabilities));
     capabilities.can_generate_exception_events = 1;
     if ((*jvmti)->AddCapabilities(jvmti, &capabilities) != JVMTI_ERROR_NONE) {
+        fprintf(stderr, "AddCapabilities failed");
         return -1;
     }
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.Exception = ExceptionCallback;
     if ((*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks)) != JVMTI_ERROR_NONE) {
+        fprintf(stderr, "SetEventCallbacks failed");
         return -1;
     }
     if ((*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE, JVMTI_EVENT_EXCEPTION, NULL) != JVMTI_ERROR_NONE) {
+        fprintf(stderr, "SetEventNotificationMode failed");
         return -1;
     }
 
