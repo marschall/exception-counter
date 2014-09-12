@@ -15,13 +15,15 @@
 _Atomic int32_t count = ATOMIC_VAR_INIT(0);
 // static atomic_int_fast32_t count;
 
-JNIEXPORT jint JNICALL Java_com_github_marschall_excount_ExceptionCounter_getCount
-  (JNIEnv *env, jobject thisObj) {
+JNIEXPORT jint JNICALL
+  Java_com_github_marschall_excount_ExceptionCounter_getCount(JNIEnv *env,
+                                                              jobject thisObj) {
     return atomic_load(&count);
 }
 
-JNIEXPORT jint JNICALL Java_com_github_marschall_excount_ExceptionCounter_clearAndGetCount
-  (JNIEnv *env, jobject thisObj) {
+JNIEXPORT jint JNICALL
+  Java_com_github_marschall_excount_ExceptionCounter_clearAndGetCount(JNIEnv *env,
+                                                                      jobject thisObj) {
     return atomic_exchange(&count, 0);
 }
 
@@ -38,17 +40,27 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     jvmtiEventCallbacks callbacks;
     jvmtiCapabilities capabilities;
 
-    (*vm)->GetEnv(vm, (void**)&jvmti, JVMTI_VERSION_1_0);
+    if ((*vm)->GetEnv(vm, (void**)&jvmti, JVMTI_VERSION_1_0) != JNI_OK) {
+        return -1;
+    } 
 
     memset(&capabilities, 0, sizeof(capabilities));
     capabilities.can_generate_exception_events = 1;
-    (*jvmti)->AddCapabilities(jvmti, &capabilities);
+    if ((*jvmti)->AddCapabilities(jvmti, &capabilities) != JVMTI_ERROR_NONE) {
+        return -1;
+    }
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.Exception = ExceptionCallback;
-    (*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks));
-    (*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE, JVMTI_EVENT_EXCEPTION, NULL);
+    if ((*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks)) != JVMTI_ERROR_NONE) {
+        return -1;
+    }
+    if ((*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE, JVMTI_EVENT_EXCEPTION, NULL) != JVMTI_ERROR_NONE) {
+        return -1;
+    }
 
     return 0;
 }
+
+// JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM* vm, char *options, void *reserved)
 
