@@ -12,7 +12,7 @@ public final class ExceptionCounter implements ExceptionCounterMXBean {
     System.loadLibrary("excount");
     
     try {
-      ObjectName objectName = new ObjectName("com.github.marschall.excount:type=ExceptionCounter");
+      ObjectName objectName = new ObjectName(OBJECT_NAME);
       MBeanServer server = ManagementFactory.getPlatformMBeanServer();
       
       ExceptionCounterMXBean mxBean = new ExceptionCounter();
