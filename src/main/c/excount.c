@@ -6,16 +6,23 @@
 #include "fix_atomics.h"
 #include "com_github_marschall_excount_ExceptionCounter.h"
 
-// http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
-// http://docs.oracle.com/javase/7/docs/platform/jvmti/jvmti.html
-// https://blogs.oracle.com/kto/entry/using_vm_agents
-// https://plumbr.eu/blog/migrating-from-javaagent-to-jvmti-our-experience
-// https://developer.apple.com/library/mac/documentation/cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html
-// http://en.cppreference.com/w/c/atomic
+/*
+ * Various JVMTI links
+ * http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
+ * http://docs.oracle.com/javase/7/docs/platform/jvmti/jvmti.html
+ * https://blogs.oracle.com/kto/entry/using_vm_agents
+ * https://plumbr.eu/blog/migrating-from-javaagent-to-jvmti-our-experience
+ * C atomics links
+ * http://en.cppreference.com/w/c/atomic
+ */
 
-//_Atomic int32_t count = ATOMIC_VAR_INIT(0);
+/*
+ * Missing compiler support
+ * _Atomic int32_t count = ATOMIC_VAR_INIT(0);
+ * static atomic_int_fast32_t count;
+ */
 _Atomic(int32_t) count = ATOMIC_VAR_INIT(0);
-// static atomic_int_fast32_t count;
+
 
 JNIEXPORT jint JNICALL
   Java_com_github_marschall_excount_ExceptionCounter_getCount(JNIEnv *env,

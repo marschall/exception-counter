@@ -28,10 +28,10 @@
 */
 
 #if __STDC_VERSION__ >= 201112L
-// https://github.com/jeffhammond/HPCInfo/blob/master/c11/atomics.c
+/* https://github.com/jeffhammond/HPCInfo/blob/master/c11/atomics.c */
 #include <stdatomic.h>
 #else
-// https://gist.github.com/nhatminhle/5181506
+/* https://gist.github.com/nhatminhle/5181506 */
 #include <stddef.h>
 #include <stdint.h>
 
@@ -51,7 +51,7 @@
 #endif
  
 #if !defined(__CLANG_ATOMICS) && !defined(__GNUC_ATOMICS)
-// __has_feature(c_atomic) does not work for whatever reason
+/* __has_feature(c_atomic) does not work for whatever reason */
 #if __has_extension(c_atomic)
 #define __CLANG_ATOMICS
 #elif __GNUC_PREREQ__(4, 7)
