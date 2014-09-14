@@ -61,20 +61,9 @@
         <libraries>
           <library>
             <type>jni</type>
-            <!-- 
-            <narSystemPackage>com.riskfocusinc.demo</narSystemPackage>
-             -->
             <linkCPP>false</linkCPP>
           </library>
         </libraries>
-        <!-- 
-        <linker>
-          <name>clang</name>
-        </linker>
-         -->
-        <c>
-          <name>clang</name>
-        </c>
       </configuration>
     </plugin>
       <plugin>
@@ -229,6 +218,35 @@
                 </goals>
               </execution>
             </executions>
+          </plugin>
+        </plugins>
+      </build>
+      </profile>
+    <profile>
+      <id>clang</id>
+      <activation>
+        <!-- Travis is on gcc 4.6 -->
+        <!-- http://docs.travis-ci.com/user/ci-environment/#Environment-variables -->
+        <property>
+          <name>env.TRAVIS</name>
+          <value>true</value>
+        </property>
+        <os>
+          <name>Mac OS X</name>
+          <family>Mac</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.maven-nar</groupId>
+            <artifactId>nar-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <c>
+                <name>clang</name>
+              </c>
+            </configuration>
           </plugin>
         </plugins>
       </build>
