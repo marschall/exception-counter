@@ -99,7 +99,10 @@ typedef enum memory_order memory_order;
 #define atomic_fetch_add_explicit(object, operand, order)              \
         __atomic_fetch_add(&(object)->__val, operand, order)
 #else
-#error atomics not supported and can't be emulated
+/*
+ * Unsupported compiler and version combination.
+ */
+#error atomics not supported and can not be emulated
 #endif
 
 /*
