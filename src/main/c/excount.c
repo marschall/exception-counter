@@ -13,8 +13,8 @@
 // https://developer.apple.com/library/mac/documentation/cocoa/Conceptual/Multithreading/ThreadSafety/ThreadSafety.html
 // http://en.cppreference.com/w/c/atomic
 
-// static volatile int count = 0;
-_Atomic int32_t count = ATOMIC_VAR_INIT(0);
+//_Atomic int32_t count = ATOMIC_VAR_INIT(0);
+_Atomic(int32_t) count = ATOMIC_VAR_INIT(0);
 // static atomic_int_fast32_t count;
 
 JNIEXPORT jint JNICALL
