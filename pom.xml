@@ -63,10 +63,18 @@
             <type>jni</type>
             <!-- 
             <narSystemPackage>com.riskfocusinc.demo</narSystemPackage>
-            <linkCPP>false</linkCPP>
              -->
+            <linkCPP>false</linkCPP>
           </library>
         </libraries>
+        <!-- 
+        <linker>
+          <name>clang</name>
+        </linker>
+         -->
+        <c>
+          <name>clang</name>
+        </c>
       </configuration>
     </plugin>
       <plugin>
