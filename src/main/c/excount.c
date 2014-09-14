@@ -1,9 +1,10 @@
 #include <jni.h>
 #include <jvmti.h>
 #include <stdint.h>
-#include <stdatomic.h>
-#include<stdio.h>
-// #include "com_github_marschall_excount_ExceptionCounter.h"
+#include <stdio.h>
+#include <string.h>
+#include "fix_atomics.h"
+#include "com_github_marschall_excount_ExceptionCounter.h"
 
 // http://stackoverflow.com/questions/23561555/java-exceptions-counter-on-jvm-hotspot#23567931
 // http://docs.oracle.com/javase/7/docs/platform/jvmti/jvmti.html
