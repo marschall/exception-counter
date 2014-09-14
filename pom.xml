@@ -221,9 +221,33 @@
           </plugin>
         </plugins>
       </build>
-      </profile>
+    </profile>
     <profile>
-      <id>clang</id>
+      <id>mac</id>
+      <activation>
+        <!-- Mac OS on a fake gcc 4.2 -->
+        <os>
+          <name>Mac OS X</name>
+          <family>Mac</family>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>com.github.maven-nar</groupId>
+            <artifactId>nar-maven-plugin</artifactId>
+            <extensions>true</extensions>
+            <configuration>
+              <c>
+                <name>clang</name>
+              </c>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+    <profile>
+      <id>travic</id>
       <activation>
         <!-- Travis is on gcc 4.6 -->
         <!-- http://docs.travis-ci.com/user/ci-environment/#Environment-variables -->
@@ -231,10 +255,6 @@
           <name>env.TRAVIS</name>
           <value>true</value>
         </property>
-        <os>
-          <name>Mac OS X</name>
-          <family>Mac</family>
-        </os>
       </activation>
       <build>
         <plugins>
