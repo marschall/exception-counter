@@ -6,7 +6,7 @@
   <version>0.1.3-SNAPSHOT</version>
   <packaging>nar</packaging>
   <name>Exception Counter</name>
-  <description>A very simple JMTI agent that counts how many exceptions have occurred in a JVM..</description>
+  <description>A very simple JMTI agent that counts how many exceptions have occurred in a JVM.</description>
   <inceptionYear>2014</inceptionYear>
   
   <prerequisites>
