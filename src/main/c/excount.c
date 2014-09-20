@@ -14,6 +14,9 @@
  * https://plumbr.eu/blog/migrating-from-javaagent-to-jvmti-our-experience
  * C atomics links
  * http://en.cppreference.com/w/c/atomic
+ * JNI links
+ * http://nerds-central.blogspot.ch/2011/06/taking-pain-out-of-jni.html
+ * http://developer.android.com/training/articles/perf-jni.html
  */
 
 /*
