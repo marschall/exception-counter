@@ -1,10 +1,46 @@
 Exception Counter JVM Agent [![Build Status](https://travis-ci.org/marschall/exception-counter.svg?branch=master)](https://travis-ci.org/marschall/exception-counter)
 ===========================
 
-Attempt at building a JMTI agent. **NOT WORKING!**
+A very simple JMTI agent that counts how many exceptions have occurred in a JVM.
 
-### Why only a 32bit counter?
-You can have 60 exceptions per second and run for a year.
+Also contains an MBean that can be used for monitoring.
 
-Requires C11 Atomics (GCC 4.9+ or Clang 3.1+)
+### Why a JMTI agent and not bytecode instrumentation?
+
+A JMTI agent has several advantages over bytecode instrumentation:
+
+ - It also reports exceptions raised by the VM (eg. `NullPointerException` or `ArithmeticException`) or native code `IOException`.
+ - It should be a lot faster.
+ - It less intrusive for things like debugging.
+ - It is unaffected by class file format changes.
+
+### How long until the 32bit counter overflows?
+
+You can have 60 exceptions per second after a year.
+
+### Why also reporting caught exceptions?
+
+If you run inside a framework or container you will likely have a top-level exception handler that catches everything. Therefore you're unlikely to have any uncaught exceptions.
+
+### Which exceptions are not reported?
+
+To quote from the [JMTI documentation](http://docs.oracle.com/javase/8/docs/platform/jvmti/jvmti.html#Exception)
+
+> If an exception is set and cleared in a native method (and thus is never visible to Java programming language code), no exception event is generated. 
+
+### What are the requirements of the C compiler?
+
+The compiler should support C11 Atomics and provide the stdatomic.h header (currently only GCC 4.9 does). However we provide a work around that works GCC 4.7 and Clang 3.1.
+
+### I need more information about my exceptions, where and when they happen.
+
+You may want to look into licensing [Java Mission Control](http://www.oracle.com/technetwork/java/javaseproducts/mission-control/java-mission-control-1998576.html).
+
+### Should I run random JVM agents from people on the Internet?
+
+You should most definitely no. You should review the source and build from the source.
+
+Extract:
+unzip -l target/exception-counter-0.1.0-SNAPSHOT-x86_64-MacOSX-gpp-jni.nar 
+unzip -j target/exception-counter-0.1.0-SNAPSHOT-x86_64-MacOSX-gpp-jni.nar lib/x86_64-MacOSX-gpp/jni/libexception-counter-0.1.0-SNAPSHOT.jnilib  -d target/
 
