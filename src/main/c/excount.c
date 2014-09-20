@@ -71,9 +71,8 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
         fprintf(stderr, "SetEventNotificationMode failed");
         return -1;
     }
-
     return 0;
 }
 
-// JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM* vm, char *options, void *reserved)
+/* JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM* vm, char *options, void *reserved) */
 
