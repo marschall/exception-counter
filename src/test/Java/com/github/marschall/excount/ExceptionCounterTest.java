@@ -37,7 +37,7 @@ public class ExceptionCounterTest {
   public void setUp() throws JMException {
     ObjectName objectName = new ObjectName(OBJECT_NAME);
     MBeanServer server = ManagementFactory.getPlatformMBeanServer();
-    this.counter = JMX.newMBeanProxy(server, objectName, ExceptionCounterMXBean.class);
+    this.counter = JMX.newMXBeanProxy(server, objectName, ExceptionCounterMXBean.class);
   }
 
   @Test
