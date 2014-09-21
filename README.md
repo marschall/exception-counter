@@ -5,6 +5,8 @@ A very simple JMTI agent that counts how many exceptions have occurred in a JVM.
 
 Also contains an MBean that can be used for monitoring.
 
+<img src="https://raw.githubusercontent.com/marschall/exception-counter/master/src/doc/exception-count-2.png" width="877" height="372" alt="VisualVM"/>
+
 ### How do I run it?
 
 Adding `-agentpath:/path/to/agent` is the simplest way to do it.
