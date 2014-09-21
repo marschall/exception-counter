@@ -50,7 +50,3 @@ You may want to look into licensing [Java Mission Control](http://www.oracle.com
 
 You should most definitely not. You should review the source and build from the source.
 
-Extract:
-unzip -l target/exception-counter-0.1.0-SNAPSHOT-x86_64-MacOSX-gpp-jni.nar 
-unzip -j target/exception-counter-0.1.0-SNAPSHOT-x86_64-MacOSX-gpp-jni.nar lib/x86_64-MacOSX-gpp/jni/libexception-counter-0.1.0-SNAPSHOT.jnilib  -d target/
-
