@@ -9,7 +9,11 @@ Also contains an MBean that can be used for monitoring.
 
 ### How do I run it?
 
-Adding `-agentpath:/path/to/agent` is the simplest way to do it.
+Adding `-agentpath:/path/to/agent` is the simplest way to do it. To read the values the JAR has to be in the classpath as well.
+
+### Can I attach at runtime?
+
+Attaching with `$JAVA_HOME/bin/java -cp $JAVA_HOME/lib/tools.jar:exception-counter.jar com.github.marschall.excount.ExceptionCounterAttacher -p pidOfProcessToAttachTo -a /path/to/agent` is the simplest way to do it. To read the values the JAR has to be in the classpath as well.
 
 ### Why a JMTI agent and not bytecode instrumentation?
 

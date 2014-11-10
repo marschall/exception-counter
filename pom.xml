@@ -1,14 +1,15 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.github.marschall</groupId>
   <artifactId>exception-counter</artifactId>
-  <version>0.1.4-SNAPSHOT</version>
+  <version>0.2.0-SNAPSHOT</version>
   <packaging>nar</packaging>
   <name>Exception Counter</name>
   <description>A very simple JMTI agent that counts how many exceptions have occurred in a JVM.</description>
   <inceptionYear>2014</inceptionYear>
-  
+
   <prerequisites>
     <maven>2.2.1</maven>
   </prerequisites>
@@ -33,7 +34,7 @@
       </roles>
     </developer>
   </developers>
-  
+
   <licenses>
     <license>
       <name>MIT</name>
@@ -41,7 +42,7 @@
       <distribution>repo</distribution>
     </license>
   </licenses>
-  
+
   <distributionManagement>
     <snapshotRepository>
       <id>sonatype-nexus-snapshots</id>
@@ -54,7 +55,7 @@
       <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
     </repository>
   </distributionManagement>
-  
+
   <dependencies>
     <dependency>
       <groupId>junit</groupId>
@@ -66,19 +67,22 @@
 
   <build>
     <plugins>
-    <plugin>
-      <groupId>com.github.maven-nar</groupId>
-      <artifactId>nar-maven-plugin</artifactId>
-      <extensions>true</extensions>
-      <configuration>
-        <libraries>
-          <library>
-            <type>jni</type>
-            <linkCPP>false</linkCPP>
-          </library>
-        </libraries>
-      </configuration>
-    </plugin>
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+      </plugin>
+      <plugin>
+        <groupId>com.github.maven-nar</groupId>
+        <artifactId>nar-maven-plugin</artifactId>
+        <extensions>true</extensions>
+        <configuration>
+          <libraries>
+            <library>
+              <type>jni</type>
+              <linkCPP>false</linkCPP>
+            </library>
+          </libraries>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <configuration>
@@ -103,27 +107,12 @@
           </execution>
         </executions>
       </plugin>
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>build-helper-maven-plugin</artifactId>
-        <executions>
-          <execution>
-            <id>attach-artifacts</id>
-            <phase>package</phase>
-            <goals>
-              <goal>attach-artifact</goal>
-            </goals>
-            <configuration>
-              <artifacts>
-                <artifact>
-                  <file>${project.build.directory}/${project.build.finalName}.jar</file>
-                  <type>jar</type>
-                </artifact>
-              </artifacts>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
+      <!-- <plugin> <groupId>org.codehaus.mojo</groupId> <artifactId>build-helper-maven-plugin</artifactId> 
+        <executions> <execution> <id>attach-artifacts</id> <phase>package</phase> 
+        <goals> <goal>attach-artifact</goal> </goals> <configuration> <artifacts> 
+        <artifact> <file>${project.build.directory}/${project.build.finalName}.jar</file> 
+        <type>jar</type> </artifact> </artifacts> </configuration> </execution> </executions> 
+        </plugin> -->
       <plugin>
         <groupId>org.jboss.jandex</groupId>
         <artifactId>jandex-maven-plugin</artifactId>
@@ -225,7 +214,8 @@
           <artifactId>maven-scm-plugin</artifactId>
           <version>1.9.2</version>
         </plugin>
-        <!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
+        <!--This plugin's configuration is used to store Eclipse m2e settings 
+          only. It has no influence on the Maven build itself. -->
         <plugin>
           <groupId>org.eclipse.m2e</groupId>
           <artifactId>lifecycle-mapping</artifactId>
@@ -253,7 +243,7 @@
       </plugins>
     </pluginManagement>
   </build>
-  
+
   <profiles>
     <profile>
       <id>deploy-to-sonatype-oss</id>
@@ -323,6 +313,32 @@
           </plugin>
         </plugins>
       </build>
+    </profile>
+    <profile>
+      <!--Only use this dependency if a tools.jar file exists in the JDK's 
+        lib directory -->
+      <id>toosjar-profile</id>
+      <activation>
+        <file>
+          <exists>${java.home}/../lib/tools.jar</exists>
+        </file>
+      </activation>
+      <properties>
+        <toolsjar>${java.home}/../lib/tools.jar</toolsjar>
+      </properties>
+      <dependencies>
+        <dependency>
+          <!--Need tools.jar in compilation classpath. JDK 1.7 no longer 
+            has it there by default: -->
+          <groupId>com.sun</groupId>
+          <artifactId>tools</artifactId>
+          <!-- version number is irrelevant since we exclude this from the 
+            dependencies plugin: -->
+          <version>99.9.9</version>
+          <scope>system</scope>
+          <systemPath>${java.home}/../lib/tools.jar</systemPath>
+        </dependency>
+      </dependencies>
     </profile>
   </profiles>
 
