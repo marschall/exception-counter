@@ -53,29 +53,44 @@ JNIEXPORT jint JNICALL Agent_OnLoad(JavaVM *vm, char *options, void *reserved) {
     jvmtiCapabilities capabilities;
 
     if ((*vm)->GetEnv(vm, (void**)&jvmti, JVMTI_VERSION_1_0) != JNI_OK) {
-        fprintf(stderr, "GetEnv failed");
+        fprintf(stderr, "GetEnv failed\n");
         return -1;
-    } 
+    }
 
     memset(&capabilities, 0, sizeof(capabilities));
     capabilities.can_generate_exception_events = 1;
     if ((*jvmti)->AddCapabilities(jvmti, &capabilities) != JVMTI_ERROR_NONE) {
-        fprintf(stderr, "AddCapabilities failed");
+        fprintf(stderr, "AddCapabilities failed\n");
         return -1;
     }
 
     memset(&callbacks, 0, sizeof(callbacks));
     callbacks.Exception = ExceptionCallback;
     if ((*jvmti)->SetEventCallbacks(jvmti, &callbacks, sizeof(callbacks)) != JVMTI_ERROR_NONE) {
-        fprintf(stderr, "SetEventCallbacks failed");
+        fprintf(stderr, "SetEventCallbacks failed\n");
         return -1;
     }
     if ((*jvmti)->SetEventNotificationMode(jvmti, JVMTI_ENABLE, JVMTI_EVENT_EXCEPTION, NULL) != JVMTI_ERROR_NONE) {
-        fprintf(stderr, "SetEventNotificationMode failed");
+        fprintf(stderr, "SetEventNotificationMode failed\n");
         return -1;
     }
     return 0;
 }
 
 /* JNIEXPORT jint JNICALL Agent_OnAttach(JavaVM* vm, char *options, void *reserved) */
+JNIEXPORT void JNICALL Agent_OnUnload(JavaVM *vm) {
+    jvmtiEnv* jvmti;
+    jvmtiCapabilities capabilities;
+
+    if ((*vm)->GetEnv(vm, (void**)&jvmti, JVMTI_VERSION_1_0) != JNI_OK) {
+        fprintf(stderr, "GetEnv failed\n");
+        return;
+    }
+
+    memset(&capabilities, 0, sizeof(capabilities));
+    capabilities.can_generate_exception_events = 1;
+    if ((*jvmti)->RelinquishCapabilities(jvmti, &capabilities) != JVMTI_ERROR_NONE) {
+        fprintf(stderr, "RelinquishCapabilities failed\n");
+    }
+}
 
