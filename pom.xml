@@ -11,7 +11,7 @@
   <inceptionYear>2014</inceptionYear>
 
   <prerequisites>
-    <maven>2.2.1</maven>
+    <maven>3.0.3</maven>
   </prerequisites>
 
   <url>https://github.com/marschall/exception-counter</url>
@@ -60,7 +60,7 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.11</version>
+      <version>4.12</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -149,7 +149,7 @@
         <plugin>
           <groupId>com.github.maven-nar</groupId>
           <artifactId>nar-maven-plugin</artifactId>
-          <version>3.1.0</version>
+          <version>3.2.0</version>
         </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
@@ -192,12 +192,17 @@
         <plugin>
           <groupId>org.jboss.jandex</groupId>
           <artifactId>jandex-maven-plugin</artifactId>
-          <version>1.0.1</version>
+          <version>1.0.3</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-source-plugin</artifactId>
           <version>2.3</version>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-site-plugin</artifactId>
+          <version>3.4</version>
         </plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
