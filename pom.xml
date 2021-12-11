@@ -352,6 +352,33 @@
     </profile>
     <!-- https://github.com/maven-nar/nar-maven-plugin/issues/371 -->
     <profile>
+      <id>mac-aarch64</id>
+      <activation>
+        <os>
+          <family>mac</family>
+          <arch>aarch64</arch>
+        </os>
+      </activation>
+      <build>
+        <plugins>
+          <plugin>
+            <artifactId>maven-surefire-plugin</artifactId>
+            <configuration>
+              <forkMode>once</forkMode>
+              <argLine>
+                --add-opens com.github.marschall.exceptioncounter/com.github.marschall.excount=ALL-UNNAMED
+                -agentpath:${project.build.directory}/nar/${project.artifactId}-${project.version}-${nar.aol}/lib/${nar.aol}/jni/lib${project.artifactId}-${project.version}.dylib
+                -Xcheck:jni
+              </argLine>
+             </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <properties>
+        <nar.aolProperties>${project.basedir}/src/nar/apple.arm.aol.properties</nar.aolProperties>
+      </properties>
+    </profile>
+    <profile>
       <id>mac-x86_64</id>
       <activation>
         <os>
