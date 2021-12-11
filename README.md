@@ -17,7 +17,7 @@ Can I attach at runtime?
 
 Attaching with JCMD is the simplest way to do it
 
-    jcmd JVMTI.agent_load pidOfProcessToAttachTo /path/to/agent
+    jcmd pidOfProcessToAttachTo JVMTI.agent_load /path/to/agent
 
 To read the values the JAR has to be in the classpath as well.
 
