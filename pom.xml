@@ -350,6 +350,7 @@
         </plugins>
       </build>
     </profile>
+    <!-- https://github.com/maven-nar/nar-maven-plugin/issues/371 -->
     <profile>
       <id>mac-x86_64</id>
       <activation>
