@@ -1,9 +1,8 @@
 package com.github.marschall.excount;
 
 import static com.github.marschall.excount.ExceptionCounterMXBean.OBJECT_NAME;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.lang.management.ManagementFactory;
 
@@ -12,61 +11,56 @@ import javax.management.JMX;
 import javax.management.MBeanServer;
 import javax.management.ObjectName;
 
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-public class ExceptionCounterTest {
+class ExceptionCounterTest {
 
   private ExceptionCounterMXBean counter;
 
-  @BeforeClass
-  public static void register() {
+  @BeforeAll
+  static void register() {
     ExceptionCounter.register();
   }
 
-  @AfterClass
-  public static void unregister() {
+  @AfterAll
+  static void unregister() {
     ExceptionCounter.unregister();
   }
 
-  @Before
-  public void setUp() throws JMException {
+  @BeforeEach
+  void setUp() throws JMException {
     ObjectName objectName = new ObjectName(OBJECT_NAME);
     MBeanServer server = ManagementFactory.getPlatformMBeanServer();
     this.counter = JMX.newMXBeanProxy(server, objectName, ExceptionCounterMXBean.class);
   }
 
   @Test
-  public void getCount() {
+  void getCount() {
     int baseCount = this.counter.getCount();
     incrementExceptionCountByThrow();
-    assertEquals("exception count", baseCount + 1, this.counter.getCount());
+    assertEquals(baseCount + 1, this.counter.getCount(), "exception count");
     incrementExceptionCountByDivisionByZero();
-    assertEquals("exception count", baseCount + 2, this.counter.getCount());
+    assertEquals(baseCount + 2, this.counter.getCount(), "exception count");
     incrementExceptionCountByNullPointer();
-    assertEquals("exception count", baseCount + 3, this.counter.getCount());
+    assertEquals(baseCount + 3, this.counter.getCount(), "exception count");
   }
 
   @Test
-  public void clearAndGetCount() {
+  void clearAndGetCount() {
     this.counter.clearAndGetCount();
     incrementExceptionCountByThrow();
-    assertEquals("exception count", 1, this.counter.clearAndGetCount());
+    assertEquals(1, this.counter.clearAndGetCount(), "exception count");
     incrementExceptionCountByDivisionByZero();
-    assertEquals("exception count", 1, this.counter.clearAndGetCount());
+    assertEquals(1, this.counter.clearAndGetCount(), "exception count");
     incrementExceptionCountByNullPointer();
-    assertEquals("exception count", 1, this.counter.clearAndGetCount());
+    assertEquals(1, this.counter.clearAndGetCount(), "exception count");
   }
 
   private static void incrementExceptionCountByNullPointer() {
-    try {
-      nullPointerException(null);
-      fail("exception not thrown");
-    } catch (NullPointerException e) {
-      assertTrue(true);
-    }
+    assertThrows(NullPointerException.class, () -> nullPointerException(null));
   }
 
   private static String nullPointerException(Object o) {
@@ -74,12 +68,7 @@ public class ExceptionCounterTest {
   }
 
   private static void incrementExceptionCountByThrow() {
-    try {
-      throwException();
-      fail("exception not thrown");
-    } catch (RuntimeException e) {
-      assertTrue(true);
-    }
+    assertThrows(RuntimeException.class, ExceptionCounterTest::throwException);
   }
 
   private static void throwException() {
@@ -87,12 +76,7 @@ public class ExceptionCounterTest {
   }
 
   private static void incrementExceptionCountByDivisionByZero() {
-    try {
-      divisionByZero(0);
-      fail("exception not thrown");
-    } catch (ArithmeticException e) {
-      assertTrue(true);
-    }
+    assertThrows(ArithmeticException.class, () -> divisionByZero(0));
   }
 
   private static int divisionByZero(int i) {
