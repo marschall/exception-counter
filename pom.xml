@@ -342,7 +342,7 @@
               <forkMode>once</forkMode>
               <argLine>
                 --add-opens com.github.marschall.exceptioncounter/com.github.marschall.excount=ALL-UNNAMED
-                -agentpath:${project.build.directory}/nar/${project.artifactId}-${project.version}-amd64-Linux-gpp-jni/lib/amd64-Linux-gpp/jni/lib${project.artifactId}-${project.version}.so
+                -agentpath:${project.build.directory}/nar/${project.artifactId}-${project.version}-${nar.aol}-jni/lib/${nar.aol}/jni/lib${project.artifactId}-${project.version}.so
                 -Xcheck:jni
               </argLine>
             </configuration>
@@ -350,7 +350,6 @@
         </plugins>
       </build>
     </profile>
-    <!-- https://github.com/maven-nar/nar-maven-plugin/issues/371 -->
     <profile>
       <id>mac-aarch64</id>
       <activation>
@@ -375,6 +374,7 @@
         </plugins>
       </build>
       <properties>
+        <!-- https://github.com/maven-nar/nar-maven-plugin/issues/371 -->
         <nar.aolProperties>${project.basedir}/src/nar/apple.arm.aol.properties</nar.aolProperties>
       </properties>
     </profile>
@@ -392,7 +392,11 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <configuration>
               <forkMode>once</forkMode>
-              <argLine>-Djava.library.path=${project.build.directory}/nar/${project.artifactId}-${project.version}-x86_64-MacOSX-gpp-jni/lib/x86_64-MacOSX-gpp/jni -Xcheck:jni</argLine>
+              <argLine>
+                --add-opens com.github.marschall.exceptioncounter/com.github.marschall.excount=ALL-UNNAMED
+                -agentpath:${project.build.directory}/nar/${project.artifactId}-${project.version}-${nar.aol}-jni/lib/${nar.aol}/jni/lib${project.artifactId}-${project.version}.jnilib
+                -Xcheck:jni
+              </argLine>
             </configuration>
           </plugin>
         </plugins>
