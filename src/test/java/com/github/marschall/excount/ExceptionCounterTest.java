@@ -1,14 +1,10 @@
 package com.github.marschall.excount;
 
 import static com.github.marschall.excount.ExceptionCounterMXBean.OBJECT_NAME;
-import static java.nio.charset.StandardCharsets.US_ASCII;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.lang.management.ManagementFactory;
 
 import javax.management.JMException;
@@ -23,23 +19,10 @@ import org.junit.Test;
 
 public class ExceptionCounterTest {
 
-  static boolean initialized;
-
   private ExceptionCounterMXBean counter;
-
-  static synchronized void loadLibrary() {
-    if (initialized) {
-      return;
-    }
-    String version = getVersion();
-    String libraryName = "exception-counter-" + version;
-    Runtime.getRuntime().loadLibrary(libraryName);
-    initialized = true;
-  }
 
   @BeforeClass
   public static void register() {
-    loadLibrary();
     ExceptionCounter.register();
   }
 
@@ -114,20 +97,6 @@ public class ExceptionCounterTest {
 
   private static int divisionByZero(int i) {
     return 1 / i;
-  }
-
-  private static String getVersion() {
-    String fileName = "exception-counter.version";
-    try (InputStream stream = ExceptionCounterTest.class.getClassLoader().getResourceAsStream(fileName)) {
-      if (stream == null) {
-        throw new AssertionError("could not load resource: " + fileName);
-      }
-      ByteArrayOutputStream bos = new ByteArrayOutputStream(16);
-      stream.transferTo(bos);
-      return new String(bos.toByteArray(), US_ASCII);
-    } catch (IOException e) {
-      throw new AssertionError("could not load file: " + fileName, e);
-    }
   }
 
 }
