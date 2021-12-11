@@ -15,7 +15,11 @@ Adding `-agentpath:/path/to/agent` is the simplest way to do it. To read the val
 Can I attach at runtime?
 ------------------------
 
-Attaching with `$JAVA_HOME/bin/java -cp $JAVA_HOME/lib/tools.jar:exception-counter.jar com.github.marschall.excount.ExceptionCounterAttacher -p pidOfProcessToAttachTo -a /path/to/agent` is the simplest way to do it. To read the values the JAR has to be in the classpath as well.
+Attaching with JCMD is the simplest way to do it
+
+    jcmd JVMTI.agent_load pidOfProcessToAttachTo /path/to/agent
+
+To read the values the JAR has to be in the classpath as well.
 
 Why a JMTI agent and not bytecode instrumentation?
 --------------------------------------------------
