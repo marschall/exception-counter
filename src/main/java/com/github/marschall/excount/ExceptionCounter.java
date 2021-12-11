@@ -8,7 +8,7 @@ import javax.management.ObjectName;
 
 /**
  * Implementation of {@link ExceptionCounterMXBean}.
- * 
+ *
  * <p>
  * An instance of this class can be registered as an MBean using
  * {@link #register()}.
@@ -21,7 +21,7 @@ public final class ExceptionCounter implements ExceptionCounterMXBean {
    * <p>
    * Code that calls this should eventually call {@link #unregister()}
    * in order to avoid class loader leaks.
-   * 
+   *
    * @see #unregister()
    */
   public static void register() {
@@ -38,7 +38,7 @@ public final class ExceptionCounter implements ExceptionCounterMXBean {
 
   /**
    * Unregisters the instance registered in {@link #register()}.
-   * 
+   *
    * @see #register()
    */
   public static void unregister() {
@@ -53,9 +53,17 @@ public final class ExceptionCounter implements ExceptionCounterMXBean {
   }
 
   @Override
-  public native int getCount();
+  public int getCount() {
+    return getCount0();
+  }
+
+  private static native int getCount0();
 
   @Override
-  public native int clearAndGetCount();
+  public int clearAndGetCount() {
+    return clearAndGetCount0();
+  }
+
+  private static native int clearAndGetCount0();
 
 }

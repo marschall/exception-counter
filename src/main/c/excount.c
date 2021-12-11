@@ -1,9 +1,8 @@
 #include <jni.h>
 #include <jvmti.h>
-#include <stdint.h>
-#include <stdio.h>
 #include <string.h>
-#include "fix_atomics.h"
+#include <stdio.h>
+#include <stdatomic.h>
 #include "com_github_marschall_excount_ExceptionCounter.h"
 
 /*
@@ -19,24 +18,19 @@
  * http://developer.android.com/training/articles/perf-jni.html
  */
 
-/*
- * Missing compiler support
- * _Atomic int32_t count = ATOMIC_VAR_INIT(0);
- * static atomic_int_fast32_t count;
- */
-_Atomic(int32_t) count = ATOMIC_VAR_INIT(0);
+static atomic_int_fast32_t count = ATOMIC_VAR_INIT(0);
 
 
 JNIEXPORT jint JNICALL
-  Java_com_github_marschall_excount_ExceptionCounter_getCount(JNIEnv *env,
-                                                              jobject thisObj) {
-    return atomic_load(&count);
+  Java_com_github_marschall_excount_ExceptionCounter_getCount0(JNIEnv *env,
+                                                               jclass klass) {
+    return (jint) atomic_load(&count);
 }
 
 JNIEXPORT jint JNICALL
-  Java_com_github_marschall_excount_ExceptionCounter_clearAndGetCount(JNIEnv *env,
-                                                                      jobject thisObj) {
-    return atomic_exchange(&count, 0);
+  Java_com_github_marschall_excount_ExceptionCounter_clearAndGetCount0(JNIEnv *env,
+                                                                       jclass klass) {
+    return (jint) atomic_exchange(&count, 0);
 }
 
 
